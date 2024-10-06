@@ -1,0 +1,5 @@
+opencv-python==4.8.0.74
+numpy==1.24.3
+dlib==19.24.0
+scikit-image==0.21.0
+pymongo==4.3.3
