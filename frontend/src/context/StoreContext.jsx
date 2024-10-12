@@ -1,9 +1,9 @@
 import axios from "axios";
-import { createContext, useState, useRef} from "react";
+import { createContext, useState, useRef } from "react";
 
-export const StoreContext=createContext(null);
+export const StoreContext = createContext(null);
 
-const StoreContextProvider=(props)=>{
+const StoreContextProvider = (props) => {
   const [showTraining, setShowTraining] = useState(false);
   const [name, setName] = useState("");
   const [rollNumber, setRollNumber] = useState("");
@@ -11,6 +11,7 @@ const StoreContextProvider=(props)=>{
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
   const [camera, setCamera] = useState(false);
+  const [imageCount, setImageCount] = useState(0);
 
   const startCamera = async () => {
     try {
@@ -68,7 +69,7 @@ const StoreContextProvider=(props)=>{
           headers: { "Content-Type": "multipart/form-data" },
         }
       );
-      alert(response.data.message);
+      setImageCount(response.data.message);
     } catch (error) {
       console.error("Error collecting images:", error);
       alert("Failed to collect images");
@@ -86,7 +87,6 @@ const StoreContextProvider=(props)=>{
   };
 
   const handleTakeAttendance = async () => {
-
     try {
       const response = await axios.post(
         "http://localhost:5000/take_attendance"
@@ -98,32 +98,30 @@ const StoreContextProvider=(props)=>{
     }
   };
 
-    
- const contextValue ={
-  setShowTraining,
-  showTraining,
-  canvasRef,
-  videoRef,
-  setName,
-  name,
-  setRollNumber,
-  rollNumber,
-  camera,
-  toggleCamera,
-  captureImage,
-  capturedImage,
-  handleCollect,
-  handleTrain,
-  handleTakeAttendance
-  }
+  const contextValue = {
+    setShowTraining,
+    showTraining,
+    canvasRef,
+    videoRef,
+    setName,
+    name,
+    setRollNumber,
+    rollNumber,
+    camera,
+    toggleCamera,
+    captureImage,
+    capturedImage,
+    handleCollect,
+    handleTrain,
+    handleTakeAttendance,
+    imageCount
+  };
 
-return(
-  <StoreContext.Provider value={contextValue }>
-    {props.children}
-  </StoreContext.Provider>
-)
-
-}
+  return (
+    <StoreContext.Provider value={contextValue}>
+      {props.children}
+    </StoreContext.Provider>
+  );
+};
 
 export default StoreContextProvider;
-

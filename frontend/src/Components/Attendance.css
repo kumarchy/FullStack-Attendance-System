@@ -36,7 +36,7 @@
 }
 
 .training-icon {
-  font-size: 40px;
+  font-size: 30px;
   cursor: pointer;
 }
 
@@ -67,7 +67,6 @@
   display: none;
   justify-content: center;
   align-items: center;
-  /* height: 300px; */
   width: 300px;
   background-color: #49557e;
   margin-right: 0.5px;
@@ -158,6 +157,11 @@
   max-width: 260px;
   height: auto;
   margin-top: 10px;
+}
+
+.image-count{
+  color: white;
+  font-size: 14px;
 }
 
 @media(max-width:450px){

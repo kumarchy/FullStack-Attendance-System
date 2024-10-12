@@ -13,9 +13,9 @@ import time
 #   // );
 
 # MongoDB setup
-client = MongoClient('mongodb+srv://BalmikiInternational:Balmiki00@cluster0.fg0vc.mongodb.net/Balmiki_Portal')
+client = MongoClient('mongodb://localhost:27017/Attendances')
 db = client['Attendances']
-
+print("connection succesful")
 # Load the face encodings
 with open("face_encodings.pkl", "rb") as f:
     known_face_encodings = pickle.load(f)

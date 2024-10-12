@@ -1,11 +1,10 @@
-import React, {useContext} from "react";
+import React, { useContext, useState } from "react";
 import "./Attendance.css";
-import { MdOutlineModelTraining } from "react-icons/md";
-
+import { FaBars } from "react-icons/fa";
 import { StoreContext } from "../context/StoreContext";
 
-const Attendance = () => { 
-  const{ 
+const Attendance = () => {
+  const {
     setShowTraining,
     showTraining,
     canvasRef,
@@ -20,10 +19,10 @@ const Attendance = () => {
     capturedImage,
     handleCollect,
     handleTrain,
-    handleTakeAttendance
-
-    }=useContext(StoreContext);
-
+    handleTakeAttendance,
+    imageCount,
+  } = useContext(StoreContext);
+  console.log(imageCount);
   return (
     <div className="attendance-page">
       <div className="attendance-content">
@@ -43,13 +42,9 @@ const Attendance = () => {
           Take Attendance
         </button>
       </div>
-{/* 
-      <div className={`display-attendance ${displaAttendance ? "show" : ""}`}>
-        <video ref={attendanceVideoRef} autoPlay />
-      </div> */}
 
       <div className="data-process">
-        <MdOutlineModelTraining
+        <FaBars
           className="training-icon"
           onClick={() => setShowTraining(!showTraining)}
         />
@@ -93,6 +88,11 @@ const Attendance = () => {
               >
                 Collect
               </button>
+
+              {imageCount>0 
+              && <p className="image-count">{imageCount} image collected</p>
+              }
+
               <button type="button" className="train-btn" onClick={handleTrain}>
                 Train
               </button>
