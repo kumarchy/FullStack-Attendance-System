@@ -89,5 +89,5 @@ This project is a state-of-the-art, full-stack face recognition attendance syste
 
 ## Screenshots
 
-![image]([https://github.com/user-attachments/assets/ef5b7cab-1262-495e-8e54-041fa920a80e](https://github.com/kumarchy/FullStack-Attendance-System/blob/c9b36b92cf646ad52528e429b1d194074581dd94/Screenshot%202024-10-12%20005711.png))
+![image](https://github.com/kumarchy/FullStack-Attendance-System/blob/c9b36b92cf646ad52528e429b1d194074581dd94/Screenshot%202024-10-12%20005711.png)
   
