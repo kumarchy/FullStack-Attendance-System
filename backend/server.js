@@ -89,7 +89,7 @@ app.post("/train_model", (req, res) => {
   pythonProcess.on("close", (code) => {
     console.log(`child process exited with code ${code}`);
     if (code === 0) {
-      res.json({ message: "Model trained successfully" });
+      res.json({success:true, message: "Model trained successfully"});
     } else {
       res.status(500).json({ message: "Error training model" });
     }

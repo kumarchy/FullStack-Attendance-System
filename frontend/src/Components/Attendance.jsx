@@ -21,10 +21,21 @@ const Attendance = () => {
     handleTrain,
     handleTakeAttendance,
     imageCount,
+    handleTrainClick,
+    showSpinner,
+    text
   } = useContext(StoreContext);
-  console.log(imageCount);
+
   return (
     <div className="attendance-page">
+      <div className="spinner-position">
+      <div className={`spinner ${showSpinner ? 'show' : ''}`}>
+       <img className="spinner_img" src="/public/spinner.gif" alt="" />
+       <br />
+      </div>
+      <p>{text}</p>
+      </div>
+      
       <div className="attendance-content">
         <div className="attendance-heading">
           <h1 className="header">Attendance System</h1>
@@ -93,7 +104,7 @@ const Attendance = () => {
               && <p className="image-count">{imageCount} image collected</p>
               }
 
-              <button type="button" className="train-btn" onClick={handleTrain}>
+              <button type="button" className="train-btn" onClick={handleTrainClick}>
                 Train
               </button>
             </div>

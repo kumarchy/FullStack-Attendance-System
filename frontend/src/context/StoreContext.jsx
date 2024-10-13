@@ -12,6 +12,8 @@ const StoreContextProvider = (props) => {
   const canvasRef = useRef(null);
   const [camera, setCamera] = useState(false);
   const [imageCount, setImageCount] = useState(0);
+  const [text, setText]=useState('');
+  const [showSpinner, setShowSpinner]=useState(false);
 
   const startCamera = async () => {
     try {
@@ -79,7 +81,9 @@ const StoreContextProvider = (props) => {
   const handleTrain = async () => {
     try {
       const response = await axios.post("http://localhost:5000/train_model");
-      alert(response.data.message);
+      // alert(response.data.message);
+      return response.data.success;
+
     } catch (error) {
       console.error("Error training model:", error);
       alert("Failed to train model");
@@ -98,6 +102,24 @@ const StoreContextProvider = (props) => {
     }
   };
 
+  const handleTrainClick = async () => {
+    setShowSpinner(true);
+    setText('');
+    try {
+      await handleTrain();
+      setShowSpinner(false);
+      setText("Training Successful...");
+    } catch (error) {
+      setShowSpinner(false);
+      setText("Training Failed");
+      console.error("Error during training:", error);
+    }
+  };
+
+  setTimeout(() => {
+    setText('');
+  }, 3000);
+
   const contextValue = {
     setShowTraining,
     showTraining,
@@ -114,7 +136,10 @@ const StoreContextProvider = (props) => {
     handleCollect,
     handleTrain,
     handleTakeAttendance,
-    imageCount
+    imageCount,
+    handleTrainClick,
+    showSpinner,
+    text
   };
 
   return (

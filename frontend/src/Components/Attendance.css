@@ -15,12 +15,41 @@
   flex-grow: 1;
 }
 
+.spinner-position{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.spinner-position p{
+  position: absolute;
+  top: 50px;
+}
+
+.spinner{
+  position: absolute;
+  top: 10px;
+  left: 45%;
+  display: none;
+}
+
+.spinner.show{
+  display: block;
+}
+
+.spinner_img{
+  height: 50px;
+}
+
 .attendance-heading {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   gap: 30px;
+  
 }
 
 .header {
