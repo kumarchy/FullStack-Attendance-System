@@ -87,5 +87,7 @@ This project is a state-of-the-art, full-stack face recognition attendance syste
 ## 🤝 Contributing
 - Contributions are welcome! Please feel free to submit a Pull Request.
 
+## Screenshots
 
+![image]()
   
