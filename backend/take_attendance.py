@@ -4,6 +4,7 @@ import numpy as np
 import pickle
 from datetime import date, datetime, timedelta
 from pymongo import MongoClient
+from collections import OrderedDict
 import os
 import re
 import time
@@ -58,8 +59,9 @@ def attendance_already_taken():
 
 # Function to mark attendance
 def mark_attendance(present_students):
-    today = date.today().isoformat()
-    collection_name = f"attendance_{today}"
+    today = date.today()
+    formatted_date = today.strftime("%d %b %Y")
+    collection_name = f"attendance_{formatted_date}"
     
     # Create a new collection for today if it doesn't exist
     if collection_name not in db.list_collection_names():
@@ -72,18 +74,24 @@ def mark_attendance(present_students):
     for student in all_students:
         roll_no = get_roll_number(student)
         status = 'P' if student in present_students else 'A'
+        current_time = datetime.now()
+        formatted_time = current_time.strftime("%I:%M %p")
         
         try:
-            # Update or insert attendance record
+            ordered_doc = OrderedDict([
+                ('name', student),
+                ('roll_number', roll_no),
+                ('status', status),
+                ('date', formatted_date),
+                ('time', formatted_time)
+            ])
+            
             result = daily_collection.update_one(
-                {'student_name': student},
-                {'$set': {
-                    'roll_no': roll_no,
-                    'status': status,
-                    'timestamp': datetime.now()
-                }},
+                {'name': student},
+                {'$set': ordered_doc},
                 upsert=True
             )
+
             print(f"Updated attendance for {student} (Roll No: {roll_no}): {result.modified_count} modified, {result.upserted_id} inserted")
         except Exception as e:
             print(f"Error updating attendance for {student}: {str(e)}")
@@ -135,7 +143,7 @@ def run_attendance_system():
 
         cv2.waitKey(1)
 
-        if elapsed_time>30:
+        if elapsed_time>20:
             break
 
     cap.release()

@@ -21,10 +21,13 @@ const Attendance = () => {
     handleTrain,
     handleTakeAttendance,
     imageCount,
+    imageLimit,
     handleTrainClick,
     showSpinner,
     text
   } = useContext(StoreContext);
+
+  
 
   return (
     <div className="attendance-page">
@@ -99,10 +102,14 @@ const Attendance = () => {
               >
                 Collect
               </button>
-
-              {imageCount>0 
-              && <p className="image-count">{imageCount} image collected</p>
-              }
+        
+              {imageCount > 0 ? (
+            imageCount < 30 ? (
+              <p className="image-count">{imageCount} image{imageCount > 1 ? 's' : ''} collected</p>
+            ) : (
+              <p className="image-count">User already exist (limit reached)</p>
+            )
+          ) : null}
 
               <button type="button" className="train-btn" onClick={handleTrainClick}>
                 Train

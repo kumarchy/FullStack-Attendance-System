@@ -1,4 +1,4 @@
-// Server-side code (app.js or server.js)
+// Server-side code
 const express = require("express");
 const { spawn } = require("child_process");
 const multer = require("multer");
@@ -11,20 +11,20 @@ const port = 5000;
 
 app.use(
   cors({
-    origin: "http://localhost:5173", // Replace with your React app's URL
+    origin: "http://localhost:5173",
     methods: ["GET", "POST"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
 app.use(express.json());
 
-// Ensure uploads directory exists
+//upload directory
 const uploadsDir = "uploads/";
 if (!fs.existsSync(uploadsDir)) {
   fs.mkdirSync(uploadsDir);
 }
 
-// Set up multer for handling file uploads
+// Set up multer
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, "uploads/");
@@ -32,7 +32,10 @@ const storage = multer.diskStorage({
   filename: function (req, file, cb) {
     cb(
       null,
-      file.fieldname + "-" + Date.now() + path.extname(file.originalname)
+      file.fieldname +
+        "-" +
+        Date.now() +
+        path.extname(file.originalname)
     );
   },
 });
@@ -65,7 +68,15 @@ app.post("/collect_images", upload.single("image"), (req, res) => {
     const count = files.length;
     console.log(count);
 
-    res.json({ message: `${count}` });
+    if (count >= 30) {
+      fs.unlinkSync(imagePath);
+      return res.json({
+        message: "User already exist(limit reached)",
+        count: count,
+      });
+    }
+
+    res.json({ count: `${count}` });
   } catch (error) {
     console.error("Error in /collect_images:", error);
     res
@@ -89,7 +100,7 @@ app.post("/train_model", (req, res) => {
   pythonProcess.on("close", (code) => {
     console.log(`child process exited with code ${code}`);
     if (code === 0) {
-      res.json({success:true, message: "Model trained successfully"});
+      res.json({ success: true, message: "Model trained successfully" });
     } else {
       res.status(500).json({ message: "Error training model" });
     }

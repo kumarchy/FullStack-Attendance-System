@@ -12,8 +12,9 @@ const StoreContextProvider = (props) => {
   const canvasRef = useRef(null);
   const [camera, setCamera] = useState(false);
   const [imageCount, setImageCount] = useState(0);
-  const [text, setText]=useState('');
-  const [showSpinner, setShowSpinner]=useState(false);
+  const [imageLimit, setImageLimit] = useState("");
+  const [text, setText] = useState("");
+  const [showSpinner, setShowSpinner] = useState(false);
 
   const startCamera = async () => {
     try {
@@ -71,9 +72,10 @@ const StoreContextProvider = (props) => {
           headers: { "Content-Type": "multipart/form-data" },
         }
       );
-      setImageCount(response.data.message);
+      setImageCount(response.data.count);
     } catch (error) {
-      console.error("Error collecting images:", error);
+      // console.error("Error collecting images:", error);
+      setImageLimit(response.data.message);
       alert("Failed to collect images");
     }
   };
@@ -81,9 +83,7 @@ const StoreContextProvider = (props) => {
   const handleTrain = async () => {
     try {
       const response = await axios.post("http://localhost:5000/train_model");
-      // alert(response.data.message);
       return response.data.success;
-
     } catch (error) {
       console.error("Error training model:", error);
       alert("Failed to train model");
@@ -104,7 +104,7 @@ const StoreContextProvider = (props) => {
 
   const handleTrainClick = async () => {
     setShowSpinner(true);
-    setText('');
+    setText("");
     try {
       await handleTrain();
       setShowSpinner(false);
@@ -117,7 +117,7 @@ const StoreContextProvider = (props) => {
   };
 
   setTimeout(() => {
-    setText('');
+    setText("");
   }, 3000);
 
   const contextValue = {
@@ -137,9 +137,10 @@ const StoreContextProvider = (props) => {
     handleTrain,
     handleTakeAttendance,
     imageCount,
+    imageLimit,
     handleTrainClick,
     showSpinner,
-    text
+    text,
   };
 
   return (
