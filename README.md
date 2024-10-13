@@ -46,7 +46,7 @@ This project is a state-of-the-art, full-stack face recognition attendance syste
 
 - Clone the repository:
   ``` bash
-  git clone https://github.com/yourusername/face-recognition-attendance.git
+  git clone https://github.com/kumarchy/FullStack-Attendance-System.git
 
 - Install dependencies:
   ``` bash
@@ -64,13 +64,12 @@ This project is a state-of-the-art, full-stack face recognition attendance syste
   npm start
 
 ## 📘 Usage
-1. Access the application at http://localhost:3000.
-2. Use the "Training" section to register new students:
 
+1. Use the "Training" section to register new students:
   - Enter name and roll number
   - Capture images using the webcam
-3. Train the model using the "Train" button.
-4. Use the "Take Attendance" button to start the attendance process.
+2. Train the model using the "Train" button.
+3. Use the "Take Attendance" button to start the attendance process.
 
 ## 🌐 API Endpoints
 
@@ -80,7 +79,6 @@ This project is a state-of-the-art, full-stack face recognition attendance syste
 
 ## 🔮 Future Enhancements
 
-- Implement liveness detection to prevent spoofing
 - Develop a mobile app for on-the-go attendance marking
 - Optimize for large-scale deployments with load balancing
 - Integrate with existing school/corporate management systems
