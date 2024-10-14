@@ -31,6 +31,8 @@ const Attendance = () => {
   const [error, setError] = useState(""); 
 
   const acceptedFileExtensions = ["jpg", "png", "jpeg"];
+  const acceptedFileTypeString = acceptedFileExtensions.map((ext)=>`.${ext}`).join(",");
+
   const fileInputRef=useRef();
 
   const handleFileBtn = ()=>{
@@ -46,10 +48,7 @@ const Attendance = () => {
     const newSelectedFiles = [...selectedFiles];
     let hasError = false;
     const fileTypeRegex = new RegExp(acceptedFileExtensions.join("|", "i"));
-    if(!hasError){
-      setError("");
-      setSelectedFiles(newSelectedFiles);
-    }
+
     newFilesArray.forEach((file)=>{
       if(newSelectedFiles.some((f)=>f.name === file.name)){
         hasError=true;
@@ -58,15 +57,37 @@ const Attendance = () => {
       hasError=true;
       setError(`Only ${acceptedFileExtensions.join(", ")} files are allowed`);
       }else{
-        newSelectedFiles.push(file);
+        const fileUrl={
+          file,url:URL.createObjectURL(file)
+        };
+        newSelectedFiles.push(fileUrl);
       }     
-    })
-  }
+    });
+    if(!hasError){
+      setError("");
+      setSelectedFiles(newSelectedFiles);
+    }
+  };
 
   const handleDrop =(event)=>{
   event.preventDefault();
   const droppedFiles = Array.from (event.dataTransfer.files);
   processFiles(droppedFiles);
+  }
+
+  const handlFileDelete = (index)=>{
+  const updateFiles = [...selectedFiles];
+  updateFiles.splice(index, 1);
+  setSelectedFiles(updateFiles);
+  }
+
+  const handleSubmit = () =>{
+  if(selectedFiles.length===0){
+    setError("File is required");
+  }else{
+    setError("");
+    setSelectedFiles([]);
+  }
   }
 
   return (
@@ -101,18 +122,20 @@ const Attendance = () => {
           <p>or</p>
           <button className="upload-btn" onClick={handleFileBtn}>Upload Files</button>
 
-          <input type="file" name="file" id="file" multiple ref={fileInputRef} onChange={handleFileChange} hidden/>
+          <button onClick={handleSubmit}>save</button>
+
+          <input type="file" name="file" accept={acceptedFileTypeString} id="file" multiple ref={fileInputRef} onChange={handleFileChange} hidden/>
 
          </div>
          <div className="container">
-          <div className="image">
-          <span className="delete">&times;</span>
-          </div>
           {selectedFiles.length>0 ?(
             selectedFiles.map((image,index)=>
-              <img key={index} src={image.url} alt={image.name} /> 
+              <div key={index} className="upload-img">
+              <img src={image.url} alt={image.name} /> 
+              <span className="delete" onClick={()=>handlFileDelete(index)}>&times;</span>
+              </div>
             )
-          ) // <p>Files uploaded</p>
+          ) 
           : <p>No Files Uploaded Yet</p>}
          </div>
         </div>
