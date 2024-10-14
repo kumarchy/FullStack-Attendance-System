@@ -8,7 +8,7 @@
 .attendance-content {
   display: flex;
   flex-direction: column;
-  gap: 80px;
+  gap: 30px;
   justify-content: center;
   align-items: center;
   padding: 40px;
@@ -147,8 +147,8 @@
 .attendance-image #recognized-face {
   height: 30vw;
   width: 30vw;
-  max-width: 200px;
-  max-height: 200px;
+  max-width: 180px;
+  max-height: 180px;
   min-width: 120px;
   min-height: 120px;
   border-radius: 50%;
@@ -171,6 +171,61 @@
   transition: 0.2s;
 }
 
+.card{
+  /* box-shadow: 0 0 5px #ffdfdf;
+  border-radius: 5px;
+  overflow: hidden; */
+}
+
+.drag-area{
+  height: 150px;
+  /* width:100%;
+  max-width: 100%; */
+  padding: 20px 10vw;
+  border-radius: 5px;
+  border: 2px dashed #49557e;
+  background: #f4f3f9;
+  display: flex;
+  flex-direction: column;
+  justify-content:center;
+  align-items: center;
+  user-select: none;
+  -webkit-user-select: none;
+  gap: 10px;
+}
+
+.upload-icon{
+  height: 60px;
+}
+
+.upload-btn{
+  padding: 5px 10px;
+  border-radius: 8px;
+  background-color: #49557e;
+  color: white;
+}
+
+.container{
+  height: 100px;
+  padding: 20px 10vw;
+  margin-top: 10px;
+  border-radius: 5px;
+  /* border: 2px solid #49557e; */
+  box-shadow: 0px 0px 1px #49557e;
+  background: #f4f3f9;
+  display: flex;
+  flex-direction: column;
+  justify-content:center;
+  align-items: center;
+  gap: 10px;
+}
+
+.delete{
+  cursor: pointer;
+  font-size: 20px;
+}
+
+/* --------- */
 .attendance-btn {
   padding: 20px 15vw;
   font-size: 20px;

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import "./Attendance.css";
 import { FaBars } from "react-icons/fa";
 import { StoreContext } from "../context/StoreContext";
@@ -27,7 +27,32 @@ const Attendance = () => {
     text
   } = useContext(StoreContext);
 
-  
+  const [selectedFiles, setSelectedFiles] = useState([]);
+  const [error, setError] = useState(""); 
+
+  const acceptedFileExtensions = ["jpg", "png", "jpeg"];
+  const fileInputRef=useRef();
+
+  const handleFileBtn = ()=>{
+    fileInputRef.current.click();
+  }
+
+  const handleFileChange = (event) =>{
+    const newFilesArray = Array.from (event.target.files);
+
+    const newSelectedFiles = [...selectedFiles];
+    
+    let hasError = false;
+    
+    newFilesArray.forEach((file)=>{
+      newSelectedFiles.push(file);
+    })
+
+    if(!hasError){
+      setSelectedFiles(newSelectedFiles);
+    }
+
+  }
 
   return (
     <div className="attendance-page">
@@ -50,6 +75,30 @@ const Attendance = () => {
             />
             <img src="/public/tick1.png" alt="" className="tick-icon" />
           </div>
+        </div>
+
+        <div className="card">
+         <div className="drag-area">
+          {/* <img className="upload-icon" src="/public/upload.png" alt="" /> */}
+          <span className="select">
+            Drag and Drop the files
+          </span>
+          <p>or</p>
+          <button className="upload-btn" onClick={handleFileBtn}>Upload Files</button>
+
+          <input type="file" name="file" id="file" multiple ref={fileInputRef} onChange={handleFileChange} hidden/>
+
+         </div>
+         <div className="container">
+          <div className="image">
+          <span className="delete">&times;</span>
+          </div>
+          {selectedFiles && selectedFiles.length>0 ?
+          // <img src="" alt="" /> 
+          <p>Files uploaded</p>
+          : <p>No Files Uploaded Yet</p>}
+          
+         </div>
         </div>
 
         <button className="attendance-btn" onClick={handleTakeAttendance}>
