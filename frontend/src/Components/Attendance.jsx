@@ -39,19 +39,34 @@ const Attendance = () => {
 
   const handleFileChange = (event) =>{
     const newFilesArray = Array.from (event.target.files);
+    processFiles(newFilesArray);
+  }
 
+  const processFiles = (newFilesArray)=>{
     const newSelectedFiles = [...selectedFiles];
-    
     let hasError = false;
-    
-    newFilesArray.forEach((file)=>{
-      newSelectedFiles.push(file);
-    })
-
+    const fileTypeRegex = new RegExp(acceptedFileExtensions.join("|", "i"));
     if(!hasError){
+      setError("");
       setSelectedFiles(newSelectedFiles);
     }
+    newFilesArray.forEach((file)=>{
+      if(newSelectedFiles.some((f)=>f.name === file.name)){
+        hasError=true;
+        setError("Files must be unique");
+      }else if(!fileTypeRegex.test(file.name.split(".").pop())){
+      hasError=true;
+      setError(`Only ${acceptedFileExtensions.join(", ")} files are allowed`);
+      }else{
+        newSelectedFiles.push(file);
+      }     
+    })
+  }
 
+  const handleDrop =(event)=>{
+  event.preventDefault();
+  const droppedFiles = Array.from (event.dataTransfer.files);
+  processFiles(droppedFiles);
   }
 
   return (
@@ -78,7 +93,7 @@ const Attendance = () => {
         </div>
 
         <div className="card">
-         <div className="drag-area">
+         <div className="drag-area" onDragOver={(e)=>e.preventDefault()} onDrop={(e)=>handleDrop(e)}>
           {/* <img className="upload-icon" src="/public/upload.png" alt="" /> */}
           <span className="select">
             Drag and Drop the files
@@ -93,13 +108,15 @@ const Attendance = () => {
           <div className="image">
           <span className="delete">&times;</span>
           </div>
-          {selectedFiles && selectedFiles.length>0 ?
-          // <img src="" alt="" /> 
-          <p>Files uploaded</p>
+          {selectedFiles.length>0 ?(
+            selectedFiles.map((image,index)=>
+              <img key={index} src={image.url} alt={image.name} /> 
+            )
+          ) // <p>Files uploaded</p>
           : <p>No Files Uploaded Yet</p>}
-          
          </div>
         </div>
+        {error && <p className="upload-error">{error}</p>}
 
         <button className="attendance-btn" onClick={handleTakeAttendance}>
           Take Attendance
