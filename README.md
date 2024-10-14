@@ -42,6 +42,59 @@ This project is a state-of-the-art, full-stack face recognition attendance syste
 3. Database: MongoDB for storing student information and attendance records.
 4. AI Processing: OpenCV and dlib for face detection and recognition.
 
+## Workflow
+1. Data Collection
+- Users can input student names and roll numbers
+- The system captures images using the device's camera
+- Images are stored in a structured directory
+2. Model Training
+- Collected images are processed to extract face encodings
+- A face recognition model is trained on these encodings
+3. Attendance Taking
+- The system activates the camera and detects faces in real-time
+- Detected faces are compared against the trained model
+- Recognized students are marked as present in the database
+  
+## Components
+## Frontend (React.js)
+The frontend provides a user interface for:
+- Inputting student details
+- Capturing images for training
+- Initiating the training process
+- Taking attendance
+  
+Key components:
+
+- Attendance.js: Main component for the attendance system UI
+- StoreContext.js: Context provider for managing state and functions
+
+## Backend (Node.js with Express)
+
+The backend server handles:
+- Image uploads
+- Initiating Python scripts for model training and attendance taking
+- Serving API endpoints for the frontend
+
+Key endpoints:
+
+- /collect_images: Handles image upload and storage
+- /train_model: Initiates the model training process
+- /take_attendance: Starts the attendance taking process
+
+## Machine Learning Module (Python)
+
+This module contains scripts for:
+
+- Processing collected images
+- Training the face recognition model
+- Performing real-time face recognition for attendance
+
+Key scripts:
+
+- capture_images.py: Captures images for training
+- train_model.py: Processes images and trains the face recognition model
+- take_attendance.py: Performs real-time face recognition and marks attendance
+
 ## 🛠 Setup and Installation
 
 - Clone the repository:
