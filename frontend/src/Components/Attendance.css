@@ -184,8 +184,20 @@
   background-color: #49557e;
 }
 
-.processed-Img h2{
+.processed-heading{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.processed-heading h2{
   color: white;
+}
+.processed-heading p{
+  color: white;
+  font-size: 22px;
+  cursor: pointer;
+  margin-bottom: 5px;
 }
 
 .card{

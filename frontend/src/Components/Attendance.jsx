@@ -23,6 +23,7 @@ const Attendance = () => {
     showSpinner,
     text,
     selectedFiles,
+    setSelectedFiles,
     error,
     processedImage,
     acceptedFileTypeString,
@@ -30,6 +31,7 @@ const Attendance = () => {
     handleFileBtn,
     processFiles,
     handleUpload,
+    deleteProcessedImg,
   } = useContext(StoreContext);
 
   return (
@@ -57,7 +59,8 @@ const Attendance = () => {
 
         {processedImage && (
             <div className="processed-Img">
-              <h2>Processed Image</h2>
+              <div className="processed-heading"><h2>Processed Image</h2><p onClick={deleteProcessedImg}>x</p></div>
+              
               <img src={processedImage} alt="Processed" style={{ maxWidth: '100%' }} />
             </div>
           )}
