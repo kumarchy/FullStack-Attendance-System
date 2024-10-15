@@ -174,11 +174,22 @@
   transition: 0.2s;
 }
 
+.processed-Img{
+  position: absolute;
+  top: 20px;
+  border: 5px solid #49557e;
+  display: flex;
+  flex-direction: column;
+  z-index: 15;
+  background-color: #49557e;
+}
+
+.processed-Img h2{
+  color: white;
+}
+
 .card{
-  /* box-shadow: 0 0 5px #ffdfdf;
-  border-radius: 5px;
-  overflow: hidden; */
-  width: 100%;
+  width:60vw;
 }
 
 .drag-area{
@@ -227,7 +238,8 @@
   justify-content: space-between;
   align-items: center;
   text-align: center;
-  width: 100%; 
+  width:100%; 
+  
 }
 
 .upload-img img{
@@ -251,6 +263,7 @@
   width: 100%;
   padding: 20px;
   font-size: 20px;
+  margin-top: 5px;
   text-align: center;
   background-color: #49557e;
   color: #fff;
@@ -282,6 +295,10 @@
 .attendance-btn {
   font-size: 18px;
 }
+
+.processed-Img{
+  top: 70px;
+}
 }
 
 @media(max-width:650px){
@@ -294,5 +311,4 @@
   .attendance-content {
     padding: 20px;
   }
-
 }
