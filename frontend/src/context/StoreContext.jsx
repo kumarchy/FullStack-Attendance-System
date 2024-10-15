@@ -76,6 +76,7 @@ const StoreContextProvider = (props) => {
         }
       );
       setImageCount(response.data.count);
+     
     } catch (error) {
       console.error("Error collecting images:", error);
       // setImageLimit(response.data.message);
@@ -172,6 +173,10 @@ const StoreContextProvider = (props) => {
     }
   };
 
+  const deleteProcessedImg=()=>{
+    setProcessedImage(null);
+  }
+
   const contextValue = {
     setShowTraining,
     showTraining,
@@ -192,6 +197,7 @@ const StoreContextProvider = (props) => {
     showSpinner,
     text,
     selectedFiles,
+    setSelectedFiles,
     error,
     processedImage,
     acceptedFileTypeString,
@@ -199,6 +205,7 @@ const StoreContextProvider = (props) => {
     handleFileBtn,
     processFiles,
     handleUpload,
+    deleteProcessedImg
   };
 
   return (
