@@ -12,9 +12,12 @@ const StoreContextProvider = (props) => {
   const canvasRef = useRef(null);
   const [camera, setCamera] = useState(false);
   const [imageCount, setImageCount] = useState(0);
-  const [imageLimit, setImageLimit] = useState("");
+  // const [imageLimit, setImageLimit] = useState("");
   const [text, setText] = useState("");
   const [showSpinner, setShowSpinner] = useState(false);
+  const [selectedFiles, setSelectedFiles] = useState([]);
+  const [error, setError] = useState("");
+  const [processedImage, setProcessedImage] = useState(null);
 
   const startCamera = async () => {
     try {
@@ -74,8 +77,8 @@ const StoreContextProvider = (props) => {
       );
       setImageCount(response.data.count);
     } catch (error) {
-      // console.error("Error collecting images:", error);
-      setImageLimit(response.data.message);
+      console.error("Error collecting images:", error);
+      // setImageLimit(response.data.message);
       alert("Failed to collect images");
     }
   };
@@ -87,18 +90,6 @@ const StoreContextProvider = (props) => {
     } catch (error) {
       console.error("Error training model:", error);
       alert("Failed to train model");
-    }
-  };
-
-  const handleTakeAttendance = async () => {
-    try {
-      const response = await axios.post(
-        "http://localhost:5000/take_attendance"
-      );
-      alert(response.data.message);
-    } catch (error) {
-      console.error("Error taking attendance:", error);
-      alert("Failed to take attendance");
     }
   };
 
@@ -120,6 +111,67 @@ const StoreContextProvider = (props) => {
     setText("");
   }, 3000);
 
+  const acceptedFileExtensions = ["jpg", "png", "jpeg"];
+  const acceptedFileTypeString = acceptedFileExtensions
+    .map((ext) => `.${ext}`)
+    .join(",");
+
+  const fileInputRef = useRef();
+
+  const handleFileBtn = () => {
+    fileInputRef.current.click();
+  };
+
+  const processFiles = (event) => {
+    const newFiles = Array.from(event.target.files);
+    let hasError = false;
+    const fileTypeRegex = new RegExp(acceptedFileExtensions.join("|"), "i");
+
+    newFiles.forEach((file) => {
+      if (!fileTypeRegex.test(file.name.split(".").pop())) {
+        hasError = true;
+        setError(`Only ${acceptedFileExtensions.join(", ")} files are allowed`);
+      } else {
+        const fileUrl = {
+          file,
+          url: URL.createObjectURL(file),
+        };
+        setSelectedFiles([fileUrl]);
+      }
+    });
+
+    if (!hasError) {
+      setError("");
+    }
+  };
+
+  const handleUpload = async () => {
+    if (selectedFiles.length === 0) {
+      setError("Please select an image to upload");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("image", selectedFiles[0].file);
+
+    try {
+      const response = await fetch("http://localhost:5000/take_attendance", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to take attendance");
+      }
+
+      const data = await response.json();
+      setProcessedImage(data.processedImage);
+    } catch (error) {
+      console.error("Error taking attendance:", error);
+      setError("Failed to take attendance. Please try again.");
+    }
+  };
+
   const contextValue = {
     setShowTraining,
     showTraining,
@@ -134,13 +186,19 @@ const StoreContextProvider = (props) => {
     captureImage,
     capturedImage,
     handleCollect,
-    handleTrain,
-    handleTakeAttendance,
     imageCount,
-    imageLimit,
+    // imageLimit,
     handleTrainClick,
     showSpinner,
     text,
+    selectedFiles,
+    error,
+    processedImage,
+    acceptedFileTypeString,
+    fileInputRef,
+    handleFileBtn,
+    processFiles,
+    handleUpload,
   };
 
   return (
