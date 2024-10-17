@@ -38,9 +38,15 @@ def find_match(face_encoding):
                 best_distance = distance
                 best_match = person
     
-    if best_distance > 0.6:
-        return None
-    return best_match
+    # Set a threshold for distance to consider it a match
+    threshold = 0.6
+    confidence = max(0, min(1, (threshold - best_distance) / threshold))  # Scales confidence between 0 and 1
+
+    # If the best distance is too high, return None for no match
+    if best_distance > threshold:
+        return None, 0.0
+
+    return best_match, confidence
 
 def get_roll_number(student_name):
     dataset_dir = "Dataset"
@@ -86,6 +92,7 @@ def mark_attendance(present_students):
     
     return attendance_data
 
+
 def process_image(image_path):
     frame = cv2.imread(image_path)
     if frame is None:
@@ -98,15 +105,15 @@ def process_image(image_path):
     for face in faces:
         shape = shape_predictor(rgb_frame, face)
         face_descriptor = face_rec_model.compute_face_descriptor(rgb_frame, shape)
-        match = find_match(np.array(face_descriptor))
+        match, confidence  = find_match(np.array(face_descriptor))
 
-        if match:
+        if confidence>=0.30:
             present_students.add(match)
 
         left, top, right, bottom = face.left(), face.top(), face.right(), face.bottom()
         cv2.rectangle(frame, (left, top), (right, bottom), (0, 255, 0), 2)
 
-        label = match if match else "Unknown"
+        label = f"{match} ({confidence:.2f})" if confidence>=0.30 else f"Unknown{confidence:.2f}"
         cv2.putText(frame, label, (left, top - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 255, 0), 2)
 
     cv2.imwrite("processed_image.jpg", frame)
