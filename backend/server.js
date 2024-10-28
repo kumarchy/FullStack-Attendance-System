@@ -6,19 +6,21 @@ const path = require("path");
 const fs = require("fs");
 const cors = require("cors");
 const { ConnectDB } = require("./config/db");
-const dataRouter = require("./routes/DataRoutes.js");
+// const dataRouter = require("./routes/DataRoutes.js");
 const ImageCollectRouter = require("./routes/ImageCollectRoutes.js");
 const TrainModelRouter = require("./routes/TrainModelRoutes.js");
 const TakeAttendanceRouter = require("./routes/TakeAttendanceRoutes.js");
+const dataRouter = require("./routes/DataRoutes.js");
+const saveImageRouter = require("./routes/SaveImageRoutes.js");
 
 const app = express();
 const port = 5000;
 
 app.use(
   cors({
-    origin: "http://localhost:5173",
-    methods: ["GET", "POST"],
-    allowedHeaders: ["Content-Type", "Authorization"],
+    // origin: "http://localhost:5173",
+    // methods: ["GET", "POST"],
+    // allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
 app.use(express.json());
@@ -26,12 +28,17 @@ app.use(express.json());
 ConnectDB();
 
 // Api endPoints
-app.use("/api/attendance",dataRouter);
-app.use("/", ImageCollectRouter);
-app.use("/", TrainModelRouter);
-// app.use("/", TakeAttendanceRouter);
+// app.use("/saveImg", express.static("uploads"));
+app.use("/api/attendanceList", dataRouter);
+app.use("/api", ImageCollectRouter);
+app.use("/api", TrainModelRouter);
+app.use("/api", TakeAttendanceRouter);
+app.use("/api", saveImageRouter);
 
-
+app.get("/", (req, resp) => {
+  console.log("Root route hit");
+  resp.send("Api is working");
+});
 
 //upload directory
 // const uploadsDir = "uploads/";
@@ -47,10 +54,7 @@ app.use("/", TrainModelRouter);
 //   filename: function (req, file, cb) {
 //     cb(
 //       null,
-//       file.fieldname +
-//         "-" +
-//         Date.now() +
-//         path.extname(file.originalname)
+//       file.fieldname + "-" + Date.now() + path.extname(file.originalname)
 //     );
 //   },
 // });
@@ -152,22 +156,23 @@ app.use("/", TrainModelRouter);
 //       if (fs.existsSync(processedImagePath)) {
 //         const imageBuffer = fs.readFileSync(processedImagePath);
 //         const base64Image = imageBuffer.toString("base64");
-//         res.json({ 
+//         res.json({
 //           message: "Attendance taken successfully",
 //           processedImage: `data:image/jpeg;base64,${base64Image}`,
-//           attendanceData: JSON.parse(stdoutData)
+//           attendanceData: JSON.parse(stdoutData),
 //         });
 //         fs.unlinkSync(processedImagePath); // Clean up the processed image
 //       } else {
 //         res.status(500).json({ message: "Processed image not found" });
 //       }
 //     } else {
-//       res.status(500).json({ message: "Error taking attendance", error: stderrData });
+//       res
+//         .status(500)
+//         .json({ message: "Error taking attendance", error: stderrData });
 //     }
 //     fs.unlinkSync(imagePath); // Clean up the uploaded image
 //   });
 // });
-
 
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
