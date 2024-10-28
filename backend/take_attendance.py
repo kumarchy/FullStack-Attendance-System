@@ -3,7 +3,6 @@
 # #   //   console.log("DB Connected")
 # #   // );
 
-
 import cv2
 import dlib
 import numpy as np
@@ -57,7 +56,7 @@ def get_roll_number(student_name):
 
 def mark_attendance(present_students):
     today = date.today()
-    formatted_date = today.strftime("%d %b %Y")
+    formatted_date = today.strftime("%d_%b_%Y").lower()
     collection_name = f"attendance_{formatted_date}"
     
     if collection_name not in db.list_collection_names():
