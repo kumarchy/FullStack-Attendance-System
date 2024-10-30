@@ -1,0 +1,49 @@
+.attendance-data-container {
+  position: absolute;
+  right: 20px;
+  top: 60px;
+  z-index: 100;
+}
+
+.table-container {
+  border: 1px solid #49557e;
+  width: 100%;
+  border-collapse: collapse; 
+  padding: 0px 5px;
+  height: 90vh;
+  overflow-y: scroll;
+}
+
+/* .table-heading{
+  position: relative;
+}
+
+.cross{
+  position: absolute;
+  right: 0;
+  top: 0;
+  padding: 4px;
+  
+} */
+
+.table-heading th, .table-data td {
+  padding: 10px 20px;
+  text-align: left;
+}
+
+tr{
+  border-bottom: 1px solid #ccc;
+}
+
+.table-data tr:hover{
+  background-color: #CFCEFF;
+}
+
+.table-heading th {
+  width: auto;
+  font-weight: bold;
+}
+
+.table-data td {
+  width: auto;
+}
