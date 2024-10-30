@@ -6,7 +6,7 @@ const path = require("path");
 const fs = require("fs");
 const cors = require("cors");
 const { ConnectDB } = require("./config/db");
-// const dataRouter = require("./routes/DataRoutes.js");
+
 const ImageCollectRouter = require("./routes/ImageCollectRoutes.js");
 const TrainModelRouter = require("./routes/TrainModelRoutes.js");
 const TakeAttendanceRouter = require("./routes/TakeAttendanceRoutes.js");
@@ -18,9 +18,9 @@ const port = 5000;
 
 app.use(
   cors({
-    // origin: "http://localhost:5173",
-    // methods: ["GET", "POST"],
-    // allowedHeaders: ["Content-Type", "Authorization"],
+    origin: "http://localhost:5173",
+    methods: ["GET", "POST"],
+    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
 app.use(express.json());
@@ -28,7 +28,7 @@ app.use(express.json());
 ConnectDB();
 
 // Api endPoints
-// app.use("/saveImg", express.static("uploads"));
+// app.use("/uploads", express.static("uploads"));
 app.use("/api/attendanceList", dataRouter);
 app.use("/api", ImageCollectRouter);
 app.use("/api", TrainModelRouter);
@@ -46,7 +46,7 @@ app.get("/", (req, resp) => {
 //   fs.mkdirSync(uploadsDir);
 // }
 
-// // Set up multer
+// Set up multer
 // const storage = multer.diskStorage({
 //   destination: function (req, file, cb) {
 //     cb(null, "uploads/");
