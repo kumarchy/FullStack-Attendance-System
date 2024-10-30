@@ -1,5 +1,5 @@
 import axios from "axios";
-import { createContext, useState, useRef } from "react";
+import { createContext, useState, useRef, useEffect } from "react";
 
 export const StoreContext = createContext(null);
 
@@ -18,6 +18,7 @@ const StoreContextProvider = (props) => {
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [error, setError] = useState("");
   const [processedImage, setProcessedImage] = useState(null);
+  const [data, setData] = useState([]);
 
   const startCamera = async () => {
     try {
@@ -69,14 +70,13 @@ const StoreContextProvider = (props) => {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/collect_images",
+        "http://localhost:5000/api/collect_images",
         formData,
         {
           headers: { "Content-Type": "multipart/form-data" },
         }
       );
       setImageCount(response.data.count);
-     
     } catch (error) {
       console.error("Error collecting images:", error);
       // setImageLimit(response.data.message);
@@ -86,7 +86,9 @@ const StoreContextProvider = (props) => {
 
   const handleTrain = async () => {
     try {
-      const response = await axios.post("http://localhost:5000/train_model");
+      const response = await axios.post(
+        "http://localhost:5000/api/train_model"
+      );
       return response.data.success;
     } catch (error) {
       console.error("Error training model:", error);
@@ -137,7 +139,7 @@ const StoreContextProvider = (props) => {
           file,
           url: URL.createObjectURL(file),
         };
-        setSelectedFiles([fileUrl]);
+        setSelectedFiles((prevFiles) => [...prevFiles, fileUrl]);
       }
     });
 
@@ -154,12 +156,14 @@ const StoreContextProvider = (props) => {
 
     const formData = new FormData();
     formData.append("image", selectedFiles[0].file);
-
     try {
-      const response = await fetch("http://localhost:5000/take_attendance", {
-        method: "POST",
-        body: formData,
-      });
+      const response = await fetch(
+        "http://localhost:5000/api/take_attendance",
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
 
       if (!response.ok) {
         throw new Error("Failed to take attendance");
@@ -173,9 +177,35 @@ const StoreContextProvider = (props) => {
     }
   };
 
-  const deleteProcessedImg=()=>{
+  const deleteProcessedImg = () => {
     setProcessedImage(null);
-  }
+  };
+
+  // fetching the attendance data from the database
+
+  const fetchAttendance = async () => {
+    try {
+      let response = await axios.get(
+        "http://localhost:5000/api/attendanceList/list"
+      );
+
+      console.log("API Response:", response.data);
+      if (response.data.success && Array.isArray(response.data.data)) {
+        setData(response.data.data);
+      } else {
+        console.log("No data or incorrect response format");
+        setData([]);
+      }
+    } catch (error) {
+      console.log("Error fetching data:", error);
+    }
+  };
+
+  console.log("fetched data:", data);
+
+  useEffect(() => {
+    fetchAttendance();
+  }, []);
 
   const contextValue = {
     setShowTraining,
@@ -192,7 +222,6 @@ const StoreContextProvider = (props) => {
     capturedImage,
     handleCollect,
     imageCount,
-    // imageLimit,
     handleTrainClick,
     showSpinner,
     text,
@@ -205,7 +234,8 @@ const StoreContextProvider = (props) => {
     handleFileBtn,
     processFiles,
     handleUpload,
-    deleteProcessedImg
+    deleteProcessedImg,
+    data,
   };
 
   return (
