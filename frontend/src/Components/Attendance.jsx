@@ -237,7 +237,7 @@ const Attendance = () => {
           </div>
         </div>
       </div>
-      <AttendanceData />
+      {/* <AttendanceData /> */}
     </>
   );
 };
