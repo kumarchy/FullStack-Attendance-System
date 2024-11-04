@@ -4,6 +4,7 @@ import { createContext, useState, useRef, useEffect } from "react";
 export const StoreContext = createContext(null);
 
 const StoreContextProvider = (props) => {
+  const [bodyBackground, setBodyBackground] = useState(false);
   const [showTraining, setShowTraining] = useState(false);
   const [name, setName] = useState("");
   const [rollNumber, setRollNumber] = useState("");
@@ -19,6 +20,10 @@ const StoreContextProvider = (props) => {
   const [error, setError] = useState("");
   const [processedImage, setProcessedImage] = useState(null);
   const [data, setData] = useState([]);
+  const [showData, setShowData] = useState(false);
+
+  const backendUrl = import.meta.env.VITE_MY_VARIABLE;
+  console.log("backend url is", backendUrl);
 
   const startCamera = async () => {
     try {
@@ -70,7 +75,7 @@ const StoreContextProvider = (props) => {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/collect_images",
+        `${backendUrl}/api/collect_images`,
         formData,
         {
           headers: { "Content-Type": "multipart/form-data" },
@@ -86,9 +91,7 @@ const StoreContextProvider = (props) => {
 
   const handleTrain = async () => {
     try {
-      const response = await axios.post(
-        "http://localhost:5000/api/train_model"
-      );
+      const response = await axios.post(`${backendUrl}/api/train_model`);
       return response.data.success;
     } catch (error) {
       console.error("Error training model:", error);
@@ -149,31 +152,59 @@ const StoreContextProvider = (props) => {
   };
 
   const handleUpload = async () => {
-    if (selectedFiles.length === 0) {
-      setError("Please select an image to upload");
-      return;
-    }
+    // if (selectedFiles.length === 0) {
+    //   setError("Please select an image to upload");
+    //   return;
+    // }
 
-    const formData = new FormData();
-    formData.append("image", selectedFiles[0].file);
+    // const formData = new FormData();
+    // formData.append("image", selectedFiles[0].file);
+    // try {
+    //   const response = await fetch(
+    //     "http://localhost:5000/api/take_attendance",
+    //     {
+    //       method: "POST",
+    //       body: formData,
+    //     }
+    //   );
+
+    //   if (!response.ok) {
+    //     throw new Error("Failed to take attendance");
+    //   }
+
+    //   const data = await response.json();
+    //   setProcessedImage(data.processedImage);
+    // } catch (error) {
+    //   console.error("Error taking attendance:", error);
+    //   setError("Failed to take attendance. Please try again.");
+    // }
+
+    // -----------------------------------------------------
+    setBodyBackground(true);
+    setShowData(!showData);
     try {
-      const response = await fetch(
-        "http://localhost:5000/api/take_attendance",
-        {
-          method: "POST",
-          body: formData,
-        }
-      );
+      let response = await axios.get(`http://10.10.33.187:5000/api/imageCollection`);
+      console.log("Image Collection : ", response.data);
 
-      if (!response.ok) {
-        throw new Error("Failed to take attendance");
-      }
+      //   const images = response.data.data.flatMap((item) => item.saveImage);
 
-      const data = await response.json();
-      setProcessedImage(data.processedImage);
+      //   const formData = new formData();
+      //   images.forEach((image, index)=>{
+      //     formData.append(`images[${index}]`, image);
+      //   });
+
+      //   console.log("formData is : ",formData)
+
+      //   const attendanceResponse = await axios.post("http://localhost:5000/api/take_attendance",
+      //     formData,
+      //     {
+      //       headers:{"Content-Type":"multipart/form-data"},
+      //     }
+      //   );
+
+      //   console.log("TakeAttendance response:", attendanceResponse.data);
     } catch (error) {
       console.error("Error taking attendance:", error);
-      setError("Failed to take attendance. Please try again.");
     }
   };
 
@@ -181,13 +212,44 @@ const StoreContextProvider = (props) => {
     setProcessedImage(null);
   };
 
+  // saving images to the database
+
+  const SaveImageDB = async () => {
+    try {
+      const formData = new FormData();
+
+      selectedFiles.forEach((fileObj) => {
+        formData.append("image", fileObj.file);
+      });
+
+      const response = await axios.post(
+        `${backendUrl}/api/addImage`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      if (response.data.success) {
+        setSelectedFiles([]);
+        alert("Images saved successfully!");
+      } else {
+        console.log(response.data.message);
+        alert("Failed to save images");
+      }
+    } catch (error) {
+      console.error("Error saving images:", error);
+      alert("Error saving images");
+    }
+  };
+
   // fetching the attendance data from the database
 
   const fetchAttendance = async () => {
     try {
-      let response = await axios.get(
-        "http://localhost:5000/api/attendanceList/list"
-      );
+      let response = await axios.get(`${backendUrl}/api/attendanceList/list`);
 
       console.log("API Response:", response.data);
       if (response.data.success && Array.isArray(response.data.data)) {
@@ -208,6 +270,8 @@ const StoreContextProvider = (props) => {
   }, []);
 
   const contextValue = {
+    bodyBackground,
+    setBodyBackground,
     setShowTraining,
     showTraining,
     canvasRef,
@@ -235,7 +299,11 @@ const StoreContextProvider = (props) => {
     processFiles,
     handleUpload,
     deleteProcessedImg,
+    SaveImageDB,
     data,
+    setData,
+    showData,
+    setShowData,
   };
 
   return (
