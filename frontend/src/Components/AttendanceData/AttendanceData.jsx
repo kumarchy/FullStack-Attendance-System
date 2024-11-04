@@ -12,7 +12,7 @@ const AttendanceData = () => {
         <thead className="table-heading">
           <tr>
             <th>Name</th>
-            <th>Roll Number</th>
+            {/* <th>Roll Number</th> */}
             <th>Status</th>
           </tr>
         </thead>
@@ -20,7 +20,7 @@ const AttendanceData = () => {
           {data.map((student, index)=>(
             <tr key={index} className="table-row-data">
             <td>{student.name}</td>
-            <td>{student.roll_number}</td>
+            {/* <td>{student.roll_number}</td> */}
             <td>{student.status}</td>
           </tr>
           ))}

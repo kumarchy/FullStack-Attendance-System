@@ -1,8 +1,21 @@
+.cross-data{
+  position: absolute;
+  top: 16px;
+  right: 20px;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
 .attendance-data-container {
   position: absolute;
   right: 20px;
   top: 60px;
   z-index: 100;
+  background-color: white;
+  /* min-height: 100px;
+  max-height: 90vh; */
+  
 }
 
 .table-container {
@@ -10,7 +23,9 @@
   width: 100%;
   border-collapse: collapse; 
   padding: 0px 5px;
-  height: 90vh;
+  /* height: 90vh; */
+  min-height: 100px;
+  max-height: 90vh;
   overflow-y: scroll;
 }
 
@@ -23,7 +38,6 @@
   right: 0;
   top: 0;
   padding: 4px;
-  
 } */
 
 .table-heading th, .table-data td {
