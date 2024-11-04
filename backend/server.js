@@ -1,4 +1,5 @@
 // Server-side code
+require('dotenv').config();
 const express = require("express");
 const { spawn } = require("child_process");
 const multer = require("multer");
@@ -14,11 +15,13 @@ const dataRouter = require("./routes/DataRoutes.js");
 const saveImageRouter = require("./routes/SaveImageRoutes.js");
 
 const app = express();
-const port = 5000;
+const port = process.env.PORT || 5000;
 
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    // origin: "http://localhost:5173",
+    origin: "http://10.10.33.187:5173",
+    origin: "*",
     methods: ["GET", "POST"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })
@@ -174,6 +177,6 @@ app.get("/", (req, resp) => {
 //   });
 // });
 
-app.listen(port, () => {
+app.listen(port, "0.0.0.0", () => {
   console.log(`Server running at http://localhost:${port}`);
 });
