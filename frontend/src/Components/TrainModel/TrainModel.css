@@ -1,0 +1,119 @@
+.data-process {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 100;
+}
+
+.data-process.disableFbars {
+  z-index: -1;
+}
+
+.training-icon {
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.training-section {
+  display: none;
+  flex-direction: row-reverse;
+  position: absolute;
+  top: 60px;
+  right: 0;
+}
+
+.training-section.show {
+  display: flex;
+}
+
+.data-gen {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  width: 300px;
+  border: 1px solid #49557e;
+  padding: 20px;
+  background-color: #49557e;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.camera-access {
+  display: none;
+  justify-content: center;
+  align-items: center;
+  width: 300px;
+  background-color: #49557e;
+  margin-right: 0.5px;
+}
+
+.camera-access.show {
+  display: flex;
+}
+
+.camera-access video {
+  /* max-height: 100%; */
+  height: auto;
+  max-width: 90%;
+}
+
+.student-input {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.student-input input,
+.train-btn {
+  padding: 10px;
+  outline: none;
+  border: 1px solid #fff;
+  background-color: #fff;
+  color: #49557e;
+}
+
+.training-btns {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.train-btn {
+  color: #49557e;
+  font-size: 16px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.capturedImage{
+  width: 100%;
+  max-width: 260px;
+  height: auto;
+  margin-top: 10px;
+}
+
+.image-count{
+  color: white;
+  font-size: 14px;
+}
+
+@media(max-width:640px){
+  .camera-access{
+    position: absolute;
+    top: 98%;
+    margin: auto;
+  }
+
+  .camera-access video {
+    width:100%;
+    max-width: 200px;
+    height: 150px;
+  }
+
+  .capturedImage{
+    width: 100%;
+    max-width: 200px;
+    height: 150px;
+    margin: auto;
+  }
+}
+ 
