@@ -183,7 +183,7 @@ const StoreContextProvider = (props) => {
     setBodyBackground(true);
     setShowData(!showData);
     try {
-      let response = await axios.get(`http://10.10.33.187:5000/api/imageCollection`);
+      let response = await axios.get(`${backendUrl}/api/imageCollection`);
       console.log("Image Collection : ", response.data);
 
       //   const images = response.data.data.flatMap((item) => item.saveImage);
