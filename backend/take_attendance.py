@@ -92,42 +92,59 @@ def mark_attendance(present_students):
     return attendance_data
 
 
-def process_image(image_path):
-    frame = cv2.imread(image_path)
-    if frame is None:
-        raise ValueError("Failed to read the image")
+def process_images(image_paths):
+    all_attendance_data = []  # Store attendance for all images
+
+    processed_images_dir = "processed_images"
+    if not os.path.exists(processed_images_dir):
+        os.makedirs(processed_images_dir)
+
+    for image_path in image_paths:
+        try:
+            frame = cv2.imread(image_path)
+            if frame is None:
+                raise ValueError(f"Failed to read the image at {image_path}")
+            
+            rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+            faces = face_detector(rgb_frame, 1)
+            present_students = set()
+
+            for face in faces:
+                shape = shape_predictor(rgb_frame, face)
+                face_descriptor = face_rec_model.compute_face_descriptor(rgb_frame, shape)
+                match, confidence  = find_match(np.array(face_descriptor))
+
+                if confidence >= 0.30:
+                    present_students.add(match)
+
+                left, top, right, bottom = face.left(), face.top(), face.right(), face.bottom()
+                cv2.rectangle(frame, (left, top), (right, bottom), (0, 255, 0), 2)
+
+                label = f"{match} ({confidence:.2f})" if confidence >= 0.30 else f"Unknown ({confidence:.2f})"
+                cv2.putText(frame, label, (left, top - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 255, 0), 2)
+
+            processed_image_path = os.path.join(processed_images_dir, f"processed_{os.path.basename(image_path)}")
+            cv2.imwrite(processed_image_path, frame)
+            
+            attendance_data = mark_attendance(present_students)
+            all_attendance_data.extend(attendance_data)  # Collect results from each image
+            print("all attendance data is:",all_attendance_data)
+
+        except Exception as e:
+            print(f"Error processing image {image_path}: {str(e)}", file=sys.stderr)
     
-    rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-    faces = face_detector(rgb_frame, 1)
-    present_students = set()
+    return all_attendance_data
 
-    for face in faces:
-        shape = shape_predictor(rgb_frame, face)
-        face_descriptor = face_rec_model.compute_face_descriptor(rgb_frame, shape)
-        match, confidence  = find_match(np.array(face_descriptor))
-
-        if confidence>=0.30:
-            present_students.add(match)
-
-        left, top, right, bottom = face.left(), face.top(), face.right(), face.bottom()
-        cv2.rectangle(frame, (left, top), (right, bottom), (0, 255, 0), 2)
-
-        label = f"{match} ({confidence:.2f})" if confidence>=0.30 else f"Unknown{confidence:.2f}"
-        cv2.putText(frame, label, (left, top - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 255, 0), 2)
-
-    cv2.imwrite("processed_image.jpg", frame)
-    attendance_data = mark_attendance(present_students)
-    return attendance_data
 
 if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        print("Usage: python take_attendance.py <image_path>")
+    if len(sys.argv) < 2:
+        print("Usage: python take_attendance.py <image_path1> <image_path2> ...")
         sys.exit(1)
 
-    image_path = sys.argv[1]
+    image_paths = sys.argv[1:]
     try:
-        attendance_data = process_image(image_path)
+        attendance_data = process_images(image_paths)
         print(json.dumps(attendance_data))
     except Exception as e:
-        print(f"Error processing image: {str(e)}", file=sys.stderr)
+        print(f"Error processing images: {str(e)}", file=sys.stderr)
         sys.exit(1)
