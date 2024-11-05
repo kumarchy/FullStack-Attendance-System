@@ -1,39 +1,40 @@
-// import mongoose from 'mongoose';
 const mongoose = require("mongoose");
 
 const dataSchema = new mongoose.Schema({
   name: { type: String, required: true },
-  date: { type: Number, required: true },
+  date: { type: String, required: true },
   roll_number: { type: String, required: true },
   status: { type: String, required: true },
   time: { type: String, required: true },
 });
 
-const date = new Date();
-const day = date.getDate();
-const year = date.getFullYear();
-const monthNames = [
-  "Jan",
-  "Feb",
-  "Mar",
-  "Apr",
-  "May",
-  "Jun",
-  "Jul",
-  "Aug",
-  "Sep",
-  "Oct",
-  "Nov",
-  "Dec",
-];
-const month = monthNames[date.getMonth()];
+const getCollectionName = () => {
+  const date = new Date();
+  const day = date.getDate().toString().padStart(2, "0");
+  const monthNames = [
+    "jan",
+    "feb",
+    "mar",
+    "apr",
+    "may",
+    "jun",
+    "jul",
+    "aug",
+    "sep",
+    "oct",
+    "nov",
+    "dec",
+  ];
+  const month = monthNames[date.getMonth()].toLowerCase();
+  const year = date.getFullYear();
+  return `attendance_${day}_${month}_${year}`;
+};
 
-const formattedDate = `attendance_${day}_${month}_${year}`;
-
-console.log(formattedDate);
+const collectionName = getCollectionName();
+console.log("Using collection name:", collectionName); 
 
 const dataModel =
-  mongoose.models.formattedDate || mongoose.model(formattedDate, dataSchema);
+  mongoose.models[collectionName] ||
+  mongoose.model(collectionName, dataSchema, collectionName); 
 
-// export default dataModel;
 module.exports = dataModel;
