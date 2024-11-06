@@ -16,6 +16,7 @@ import json
 
 # MongoDB setup
 client = MongoClient('mongodb://localhost:27017/Attendances')
+# client = MongoClient('mongodb+srv://kumarChaudhary:password%40yo%40ho3@cluster0.lidwk.mongodb.net/Attendances')
 db = client['Attendances']
 
 # Load the face encodings
