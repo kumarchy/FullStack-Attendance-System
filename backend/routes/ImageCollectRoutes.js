@@ -2,7 +2,7 @@ const express = require("express");
 const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
-const {ImageCollect} = require("../controllers/ImageCollectController");
+const { ImageCollect } = require("../controllers/ImageCollectController");
 
 const ImageCollectRouter = express.Router();
 
@@ -20,17 +20,17 @@ const storage = multer.diskStorage({
   filename: function (req, file, cb) {
     cb(
       null,
-      file.fieldname +
-        "-" +
-        Date.now() +
-        path.extname(file.originalname)
+      file.fieldname + "-" + Date.now() + path.extname(file.originalname)
     );
   },
 });
 
 const upload = multer({ storage: storage });
 
-ImageCollectRouter.post("/collect_images", upload.single("image"), ImageCollect);
-
+ImageCollectRouter.post(
+  "/collect_images",
+  upload.single("image"),
+  ImageCollect
+);
 
 module.exports = ImageCollectRouter;
