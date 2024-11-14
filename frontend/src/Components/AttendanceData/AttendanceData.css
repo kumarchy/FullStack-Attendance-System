@@ -61,3 +61,18 @@ tr{
 .table-data td {
   width: auto;
 }
+
+.download-btn{
+  width: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.download-btn button{
+  padding: 10px 20px;
+  width: 100%;
+  background-color: #49557e;
+  color: white;
+  font-size: 18px;
+}
