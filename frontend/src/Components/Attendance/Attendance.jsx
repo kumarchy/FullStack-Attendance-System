@@ -6,6 +6,7 @@ import AttendanceData from "../AttendanceData/AttendanceData";
 import axios from "axios";
 import TrainModel from "../TrainModel/TrainModel";
 import Upload from "../Upload/Upload";
+import { UserButton } from "@clerk/clerk-react";
 
 const Attendance = () => {
   const {
@@ -32,6 +33,8 @@ const Attendance = () => {
           </div>
           <p>{text}</p>
         </div>
+
+        <UserButton className="profileIcon"/>
 
         <div className="attendance-content">
           <div className="attendance-heading">

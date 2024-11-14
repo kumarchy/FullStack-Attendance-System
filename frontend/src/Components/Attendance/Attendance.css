@@ -6,9 +6,11 @@
   width: 100vw;
 }
 
-/* .attendance-page.showBodyBg{
-  background-color:#ccc;
-} */
+.attendance-page .profileIcon {
+  position: absolute;
+  left: 50px;
+  top: 50px;
+}
 
 .attendance-content {
   display: flex;

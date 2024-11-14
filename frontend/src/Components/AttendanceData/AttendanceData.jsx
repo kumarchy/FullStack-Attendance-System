@@ -7,7 +7,6 @@ import { StoreContext } from "../../context/StoreContext";
 const AttendanceData = () => {
   const { data } = useContext(StoreContext);
 
-  // Function to export data to Excel
   const exportToExcel = () => {
     const filteredData = data.map(({ _id, ...rest }) => rest);
     const worksheet = XLSX.utils.json_to_sheet(filteredData); 
@@ -21,7 +20,6 @@ const AttendanceData = () => {
       "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
     const fileExtension = ".xlsx";
 
-    // Create Blob for file download
     const blob = new Blob([excelBuffer], { type: fileType });
     FileSaver.saveAs(blob, `Attendance_Data_${currentDate}${fileExtension}`);
 
