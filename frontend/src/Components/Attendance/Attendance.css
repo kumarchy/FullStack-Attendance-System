@@ -8,8 +8,8 @@
 
 .attendance-page .profileIcon {
   position: absolute;
-  left: 50px;
-  top: 50px;
+  right: 20px;
+  top: 5px;
 }
 
 .attendance-content {

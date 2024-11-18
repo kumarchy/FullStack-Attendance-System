@@ -33,9 +33,9 @@ const Attendance = () => {
           </div>
           <p>{text}</p>
         </div>
-
-        <UserButton className="profileIcon"/>
-
+        <div className="profileIcon">
+        <UserButton/>
+        </div>
         <div className="attendance-content">
           <div className="attendance-heading">
             <h1 className="header">Attendance System</h1>
