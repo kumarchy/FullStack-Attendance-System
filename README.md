@@ -147,3 +147,5 @@ Key scripts:
 )
 ![image](https://github.com/kumarchy/FullStack-Attendance-System/blob/main/Screenshot%20From%202025-03-31%2019-00-57.png?raw=true
 )
+![image](https://github.com/kumarchy/FullStack-Attendance-System/blob/main/Screenshot%20From%202025-03-31%2019-13-16.png?raw=true
+)
