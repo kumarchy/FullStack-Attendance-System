@@ -25,6 +25,7 @@ This project is a state-of-the-art, full-stack face recognition attendance syste
 - MongoDB database for efficient data storage and retrieval
 - Automated daily attendance tracking 
 - Scalable architecture to handle multiple simultaneous users
+- Download attendance records in spreadsheet format (CSV)
 
 ## 💻 Tech Stack
 
@@ -54,6 +55,9 @@ This project is a state-of-the-art, full-stack face recognition attendance syste
 - The system activates the camera and detects faces in real-time
 - Detected faces are compared against the trained model
 - Recognized students are marked as present in the database
+4. Attendance Export
+- Attendance data can be downloaded in CSV format
+- The CSV file contains student names, roll numbers, and timestamps, status
   
 ## Components
 ## Frontend (React.js)
