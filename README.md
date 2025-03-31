@@ -66,11 +66,13 @@ The frontend provides a user interface for:
 - Capturing images for training
 - Initiating the training process
 - Taking attendance
+- Downloading attendance records as a CSV file
   
 Key components:
 
 - Attendance.js: Main component for the attendance system UI
 - StoreContext.js: Context provider for managing state and functions
+- DownloadButton.js: Handles CSV export functionality
 
 ## Backend (Node.js with Express)
 
@@ -78,12 +80,14 @@ The backend server handles:
 - Image uploads
 - Initiating Python scripts for model training and attendance taking
 - Serving API endpoints for the frontend
+- Generating and serving CSV files for attendance download
 
 Key endpoints:
 
 - /collect_images: Handles image upload and storage
 - /train_model: Initiates the model training process
 - /take_attendance: Starts the attendance taking process
+- /download_attendance: Generates and provides the CSV file
 
 ## Machine Learning Module (Python)
 
@@ -98,6 +102,7 @@ Key scripts:
 - capture_images.py: Captures images for training
 - train_model.py: Processes images and trains the face recognition model
 - take_attendance.py: Performs real-time face recognition and marks attendance
+- export_attendance.py: Exports attendance data to CSV format
 
 ## 🛠 Setup and Installation
 
@@ -127,13 +132,15 @@ Key scripts:
   - Capture images using the webcam
 2. Train the model using the "Train" button.
 3. Use the "Take Attendance" button to start the attendance process.
+4. Download attendance records in CSV format using the "Download Attendance" button.
 
 ## 🌐 API Endpoints
 
 - POST /collect_images: Upload student images for training
 - POST /train_model: Train the face recognition model
 - POST /take_attendance: Initiate the attendance taking process
-
+- GET /download_attendance: Download the attendance records as a CSV file
+- 
 ## 🔮 Future Enhancements
 
 - Develop a mobile app for on-the-go attendance marking
