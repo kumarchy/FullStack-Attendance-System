@@ -22,15 +22,4 @@ const saveImageDB = async (req, resp) => {
   }
 };
 
-// Get image collection from DB
-// const fetchImage = async (req, resp) => {
-//   try {
-//     const ImageCollection = await saveModel.find({});
-//     resp.json({ success: true, data: ImageCollection });
-//   } catch (error) {
-//     resp.json({ success: false, message: "Failed to fetch image collection" });
-//   }
-// };
-
-// module.exports = {saveImageDB, fetchImage};
 module.exports = {saveImageDB};
