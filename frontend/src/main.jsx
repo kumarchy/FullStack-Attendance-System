@@ -17,9 +17,3 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     </ClerkProvider>
   </StoreContextProvider>
 );
-
-// createRoot(document.getElementById('root')).render(
-//   <StoreContextProvider>
-//   <App />
-//   </StoreContextProvider>
-// )
