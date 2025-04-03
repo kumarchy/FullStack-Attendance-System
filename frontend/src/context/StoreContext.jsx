@@ -84,7 +84,6 @@ const StoreContextProvider = (props) => {
       setImageCount(response.data.count);
     } catch (error) {
       console.error("Error collecting images:", error);
-      // setImageLimit(response.data.message);
       alert("Failed to collect images");
     }
   };
@@ -152,57 +151,11 @@ const StoreContextProvider = (props) => {
   };
 
   const handleUpload = async () => {
-    // if (selectedFiles.length === 0) {
-    //   setError("Please select an image to upload");
-    //   return;
-    // }
-
-    // const formData = new FormData();
-    // formData.append("image", selectedFiles[0].file);
-    // try {
-    //   const response = await fetch(
-    //     "http://localhost:5000/api/take_attendance",
-    //     {
-    //       method: "POST",
-    //       body: formData,
-    //     }
-    //   );
-
-    //   if (!response.ok) {
-    //     throw new Error("Failed to take attendance");
-    //   }
-
-    //   const data = await response.json();
-    //   setProcessedImage(data.processedImage);
-    // } catch (error) {
-    //   console.error("Error taking attendance:", error);
-    //   setError("Failed to take attendance. Please try again.");
-    // }
-
-    // -----------------------------------------------------
     setBodyBackground(true);
     setShowData(!showData);
     try {
       let response = await axios.get(`${backendUrl}/api/imageCollection`);
       console.log("Image Collection : ", response.data);
-
-      //   const images = response.data.data.flatMap((item) => item.saveImage);
-
-      //   const formData = new formData();
-      //   images.forEach((image, index)=>{
-      //     formData.append(`images[${index}]`, image);
-      //   });
-
-      //   console.log("formData is : ",formData)
-
-      //   const attendanceResponse = await axios.post("http://localhost:5000/api/take_attendance",
-      //     formData,
-      //     {
-      //       headers:{"Content-Type":"multipart/form-data"},
-      //     }
-      //   );
-
-      //   console.log("TakeAttendance response:", attendanceResponse.data);
     } catch (error) {
       console.error("Error taking attendance:", error);
     }
