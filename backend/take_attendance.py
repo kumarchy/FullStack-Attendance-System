@@ -1,8 +1,3 @@
-
-# #   // await mongoose.connect('mongodb+srv://BalmikiInternational:Balmiki00@cluster0.fg0vc.mongodb.net/Balmiki_Portal').then(()=>
-# #   //   console.log("DB Connected")
-# #   // );
-
 import cv2
 import dlib
 import numpy as np
@@ -14,7 +9,6 @@ import os
 import sys
 import json
 
-# MongoDB setup
 client = MongoClient('mongodb://localhost:27017/Attendances')
 # client = MongoClient('mongodb+srv://kumarChaudhary:password%40yo%40ho3@cluster0.lidwk.mongodb.net/Attendances')
 db = client['Attendances']
